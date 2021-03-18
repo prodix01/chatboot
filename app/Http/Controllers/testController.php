@@ -2,11 +2,14 @@
 
 namespace App\Http\Controllers;
 
+
 use Illuminate\Http\Request;
 
-class testController extends Controller
+class talkController extends Controller
 {
-    public function talk() {
-        return view('talk');
+    public function test() {
+        return view('test');
     }
 }
+
+

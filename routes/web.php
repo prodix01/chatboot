@@ -20,8 +20,6 @@ Route::get('/index', function () {
     return view('index');
 });
 
-Route::get('/test', [talkController::class, 'test']);
-
-Route::get('/', [testController::class, 'talk']);
+Route::get('/', [talkController::class, 'talk']);
 
 

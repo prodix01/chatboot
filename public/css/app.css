@@ -58,7 +58,7 @@ body {
 .wrapper .title{
     background: #007bff;
     color: #fff;
-    font-size: 31px;
+    font-size: 47px;
     font-weight: 500;
     line-height: 60px;
     text-align: center;
@@ -120,7 +120,8 @@ body {
     background: #007bff;
     border-radius: 10px;
     padding: 8px 10px;
-    font-size: 21px;
+    font-size: 25px;
+    font-weight: bolder;
     word-break: break-all;
 }
 .form .user-inbox .msg-header p{
@@ -130,7 +131,7 @@ body {
 
 .wrapper .typing-field{
     display: flex;
-    height: 60px;
+    height: 80px;
     width: 100%;
     align-items: center;
     justify-content: space-evenly;
@@ -144,13 +145,17 @@ body {
     position: relative;
 }
 .wrapper .typing-field .input-data input{
-    height: 100%;
-    width: 100%;
+    height: 50px;
+    width: 980px;
+    position: relative;
+    left:-40;
+    bottom:5px;
     outline: none;
     border: 1px solid transparent;
     padding: 0 80px 0 15px;
     border-radius: 3px;
-    font-size: 20px;
+    font-size: 26px;
+    font-weight: bolder;
     background: #fff;
     transition: all 0.3s ease;
 }
@@ -182,12 +187,13 @@ body {
 }
 .wrapper .typing-field .input-data button{
     position: absolute;
-    right: 5px;
+    right: -32px;
     top: 50%;
-    height: 30px;
+    height: 37px;
     width: 110px;
     color: #fff;
-    font-size: 16px;
+    font-size: 26px;
+    font-weight: bolder;
     cursor: pointer;
     outline: none;
     opacity: 0;
