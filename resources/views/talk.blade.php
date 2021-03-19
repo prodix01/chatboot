@@ -174,16 +174,42 @@
             });
 
 
-            // 起動時のチャット
+            // 起動時
             setTimeout(function() {
                 console.log("kidou");
-                var startMessage = "何でも聞いて下さい！";
-                talk(MESSAGE_TYPE_AI, startMessage);
-            }, 0.4 * 1000);
 
-            $('input[name=chat_text]').focus();
+                var message = $('p').last().text();
+
+                //チャットデータがあったら最後のUserメッセージに返信
+                if(message != ""){
+
+                    $.ajax({
+                        url: "talk.php",
+                        type: "POST",
+                        data: {
+                            "message": message
+                        }
+                    }).then(
+                        (data) => {
+                            var aiText = data.message;
+                            talk(MESSAGE_TYPE_AI, aiText);
+                            var startMessage = "何でも聞いて下さい！";
+                            talk(MESSAGE_TYPE_AI, startMessage);
+                        },
+                        (error) => {
+                        },
+                    );
+                }
+
+                //最初に送るメッセージ
+                else{
+                    var startMessage = "何でも聞いて下さい！";
+                    talk(MESSAGE_TYPE_AI, startMessage);
+                }
+
+            }, 0.1 * 1000);
+
         });
-        
     </script>
 
     {{-- チャットデータ読み込み --}}
@@ -229,7 +255,9 @@
                         //alert(data);
                     }
                 });
+
             });
         });
     </script>
+
 </html>
