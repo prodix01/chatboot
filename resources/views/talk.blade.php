@@ -5,9 +5,9 @@
         <meta http-equiv="X-UA-Compatible" content="IE=chrome">
         <script src="https://code.jquery.com/jquery-3.3.1.js"></script>
         <script src="https://kit.fontawesome.com/54e7bb2a5a.js" crossorigin="anonymous"></script>
-        <link rel='stylesheet' href='css/app.css' />
-        
+        <link rel='stylesheet' href='css/app.css'/>
     </head>
+
     <body>
         <div><button class="fun-btn" id="actions"type="button" onClick="window.location.reload()">リセット</button></div>    
         <br/>
@@ -15,15 +15,12 @@
             <div class="title">KIM CHAT BOT</div>
             
             <!-- log領域 -->
-            <div class="form" id="form"> 
-                <div id="result">
+            <div class="form" id="form">     
+                {{-- DBからもらったチャットデータ --}}
+                <div id="result"></div>
 
-                </div>
                 <div id="talk_history">
-                    <div class="msg-header">
-                        
-                        
-                    </div>
+                    <div class="msg-header"></div>
                 </div>
             </div>
             <!-- 入力領域 -->
@@ -35,55 +32,49 @@
             </div>  
             </div>
         </div>
-        
     </body>
     
-    {{-- 받아오기 --}}
+    {{-- DBにチャットデータをPOST --}}
     <script>
         $(function(){
         
-            //[2] 추가 버튼 클릭했을 때 작동되는 함수
+            //actionボタン
             $('#action').click(function(){
                 
-            
-                //각 엘리먼트들의 데이터 값을 받아온다.
+                //データを持ってくる場所を指定。
                 //user
                 var lastName = $('#textb').val();
                 //bot
                 var firstName = $('p').last().text();
                 var action = $('#action').text();
                 
-                //성과 이름이 올바르게 입력이 되면
+                //UserとBotの入力が全部入っていたら
                 if(firstName !='' && lastName != ''){
-
-                    //alert('deta');
-                
+              
                     $.ajax({
-                    //insert page로 위에서 받은 데이터를 넣어준다.
-                    url:"action.php",
-                    method:"POST",
-                    data:{firstName:firstName,lastName:lastName,action:action },
-                    success:function(data){
-                        //성공하면 action.php 에서 출력된 데이터가 넘어온다.
-                        //alert(data);
-                    }
-                    });
-                
+                        url:"action.php",
+                        method:"POST",
+                        data:{firstName:firstName,lastName:lastName,action:action },
+                        success:function(data){
+                            //データPOSTが成功したら
+                            //alert(data);
+                        }
+                    });                
                 } else {
-                    alert('빈칸을 입력해 주세요');
+                    alert('テキストを入力して下さい。');
                 }
             }); 
         });
     </script>
-    {{-- API 받아오기 --}}
+
+    {{-- API 接続、チャット機能 --}}
     <script>
         $(document).ready(function() {
 
-            
             const MESSAGE_TYPE_AI = 1;
             const MESSAGE_TYPE_USER = 2;
 
-            // 会話ログ表示
+            // チャット表示
             var talk = function(messageType, message) {
                 let div = $('<div>');
                 let div_b = $('<div>');
@@ -122,12 +113,11 @@
                     $('#talk_history').append(div_u);
                 }
 
-
+                //スクロールを下に移動する。
                 $('#form').scrollTop($('#form')[0].scrollHeight);
 
                 console.log("kaiwa");
-               
-                
+                      
             };
 
             
@@ -145,9 +135,7 @@
                 }).then(
                     (data) => {
                         var aiText = data.message;
-
                         talk(MESSAGE_TYPE_AI, aiText);
-
                     },
                     (error) => {
                     },
@@ -156,10 +144,11 @@
             };
 
 
-
-            // 送信ボタン押下時
+            // 送信ボタン
             $('button[type="button"]').on('click', function(e) {
+
                 console.log("push");
+
                 var obj = $('input[name=chat_text]');
                 var chatText = $.trim(obj.val());
                 if(0 < chatText.length) {
@@ -178,15 +167,14 @@
             $("#textb").keydown(function(key) {
 
                 if (key.keyCode == 13) {
-                //엔터키 입력 시 작업할 내용
+                //エンターキー入力時,ボタンを押す。
                 $('#action').click();
-
                 }
 
             });
 
 
-            // 起動時の会話
+            // 起動時のチャット
             setTimeout(function() {
                 console.log("kidou");
                 var startMessage = "何でも聞いて下さい！";
@@ -196,73 +184,52 @@
             $('input[name=chat_text]').focus();
         });
         
-
     </script>
-    {{-- 불러오기 --}}
+
+    {{-- チャットデータ読み込み --}}
     <script>
         $(document).ready(function(){
 
-            fetchUser();
-            function fetchUser()
+            //チャットデータを読み込み関数を呼び出す
+            loadChatLog();
+
+            function loadChatLog()
             {
                 var action = "select";
-                //users 리스트를 select.php 에서 받아온다.
+                //チャットデータを select.php からもらう。
                 $.ajax({
                     url:"select.php",
                     method:"POST",
                     data:{action:action},
                     success:function(data){
                         //alert(data);
-                        $('#first_name').val('');
-                        $('#last_name').val('');
-                        //$('#action').text("");
+                
+                        //データをhtmlでもらう。
                         $('#result').html(data);
                     }
                 })
             }
 
         });
-
     </script>
-    {{-- 삭제하기 --}}
+
+    {{-- 削除機能 --}}
     <script>
         $(document).ready(function(){
-        
-        fetchUser();
-        
-        function fetchUser()
-        {
-        var action = "select";
-        
-        }
-        
-        //[2] 추가 버튼 클릭했을 때 작동되는 함수
-        $('#actions').click(function(){
-        
-        //각 엘리먼트들의 데이터 값을 받아온다.
-        var actions = $('#actions').text();
-        
-        //성과 이름이 올바르게 입력이 되면
-        
-        
-        $.ajax({
-        url:"delete.php",
-        method:"POST",
-        data:{actions:actions},
-        success:function(data){
-        
-        //alert(data);
-        
-        //입력 후 리스트 다시 갱신
-        fetchUser();
-        }
-        });
-        
-        });
-        
-        });
+            //[2] actionsが押された時、
+            $('#actions').click(function(){
 
+                var actions = $('#actions').text(); 
 
-
+                $.ajax({
+                    url:"delete.php",
+                    method:"POST",
+                    data:{actions:actions},
+                    success:function(data){        
+                        //alert(data);
+                    }
+                });
+            });
+        });
     </script>
 </html>

@@ -16,9 +16,9 @@ use App\Http\Controllers\testController;
 |
 */
 
-Route::get('/index', function () {
-    return view('index');
-});
+// Route::get('/index', function () {
+//     return view('index');
+// });
 
 Route::get('/', [talkController::class, 'talk']);
 

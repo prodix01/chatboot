@@ -9,13 +9,13 @@ if(mb_strlen($message) <= 0) {
     exit();
 }
  
-// APIキーを設定
+// APIキー取得
 $apiKey = 'DZZuVlmEsC0w76gkZdPdmmeVuDWOk6JA';
  
-// エンドポイントURLを設定
+// エンドポイント
 $endPoint = 'https://api.a3rt.recruit-tech.co.jp/talk/v1/smalltalk';
  
-// 送信データを作成
+// 送信データ
 $data = [
     'apikey' => $apiKey,
     'query' => $message,
@@ -31,7 +31,7 @@ curl_setopt($ch, CURLOPT_POSTFIELDS, $data);
  
 $responseJsonStr = curl_exec($ch);
  
-// エラーチェック
+// error check
 $errorNo = curl_errno($ch);
 $errorMsg = curl_error($ch);
 if (CURLE_OK !== $errorNo) {
@@ -40,7 +40,7 @@ if (CURLE_OK !== $errorNo) {
  
 curl_close($ch);
  
-// 結果をPHP配列化
+// 配列化php
 $result = json_decode($responseJsonStr, true);
 if($result === false || is_null($result)) {
     header('HTTP', true, 500);
@@ -53,7 +53,7 @@ if($result['status'] != 0) {
     exit();
 }
  
-// 画面に返す形を作成
+// 画面に返す形式
 $responseText = $result['results'][0]['reply'];
 $response = [
     'message' => $responseText,
@@ -64,3 +64,5 @@ header('content-type: application/json; charset=utf-8');
 echo json_encode($response);
 
 exit();
+
+?>

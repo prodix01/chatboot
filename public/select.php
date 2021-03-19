@@ -1,21 +1,19 @@
 <?php
 
 
-//db연결 본인의 db 정보를 넣어준다!
+//db接続
 $conn = mysqli_connect("localhost", "root", "rarkig18712","test_database");
-// Check connection
+
+// 接続確認
 if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
   }
 
-
-//users테이블 조회 프로시져를 만든다.
+//チャットデータがあるTABLEを選択
 $result = mysqli_query($conn,"SELECT * FROM insertUser");
 
-
-//echo "<table border='1'> <tr> <th>bot</th> <th>user</th></tr>";
 $n = 1;
-
+//チャットデータをチャットフォームに合わせて出力。
 while($row = mysqli_fetch_array($result)){
 echo "<div class='bot-inbox inbox'>";
 echo "<div class='icon'>";
@@ -35,8 +33,7 @@ echo "</div>";
 $n++;
 }
 
-
-echo "</table>";
+//連結終了
 mysqli_close($conn);
 
 ?>
